@@ -28,7 +28,7 @@ No need to install databases or SDKs. The project is fully containerized.
 
 ```bash
 # 1. Clone the repository
-git clone [https://github.com/your-username/FlexSpace.Api.git](https://github.com/your-username/FlexSpace.Api.git)
+git clone [https://github.com/FarizShukiurov/FlexSpace.Api.git](https://github.com/FarizShukiurov/FlexSpace.Api.git)
 cd FlexSpace.Api
 
 # 2. Build and run via Docker
