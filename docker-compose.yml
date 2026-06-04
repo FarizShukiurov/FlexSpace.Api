@@ -18,12 +18,12 @@ services:
     container_name: flex-api-container
     build:
       context: .
-      dockerfile: Geo-Event API/Dockerfile
+      dockerfile: FlexSpace.Api/Dockerfile
     ports:
       - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=flex-db;Database=GeoEventDb;User Id=sa;Password=SuperSecretPassword123!;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=flex-db;Database=FlexSpaceDb;User Id=sa;Password=SuperSecretPassword123!;TrustServerCertificate=True;
       - JwtSettings__SecretKey=SuperSecretKeyForGeoEventApiWhichMustBeAtLeast32CharactersLong!
       - JwtSettings__Issuer=GeoEventApi
       - JwtSettings__Audience=GeoEventClients
