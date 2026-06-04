@@ -98,34 +98,55 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
+try
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<FlexSpace.Api.Data.ApplicationDbContext>();
-    try
+    using (var scope = app.Services.CreateScope())
     {
-        dbContext.Database.Migrate();
-    }
-    catch (Exception ex)
-    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<FlexSpace.Api.Data.ApplicationDbContext>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred during database migration.");
-    }
 
-    if (!dbContext.Users.Any(u => u.Role == "Admin"))
-    {
-        var admin = new FlexSpace.Api.Models.User
+        try
         {
-            Name = "System Administrator",
-            Email = "admin@flexspace.com",
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword("AdminSuperPassword2026"),
-            Role = "Admin"
-        };
+            logger.LogInformation("Starting database migration...");
+            dbContext.Database.Migrate();
+            logger.LogInformation("Database migration completed successfully.");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred during database migration.");
+            throw;
+        }
 
-        dbContext.Users.Add(admin);
-        dbContext.SaveChanges();
+        try
+        {
+            if (!dbContext.Users.Any(u => u.Role == "Admin"))
+            {
+                var admin = new FlexSpace.Api.Models.User
+                {
+                    Name = "System Administrator",
+                    Email = "admin@flexspace.com",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("AdminSuperPassword2026"),
+                    Role = "Admin"
+                };
 
-        Console.WriteLine("======= SYSTEM: Default administrator created (admin@flexspace.com) =======");
+                dbContext.Users.Add(admin);
+                dbContext.SaveChanges();
+
+                logger.LogInformation("======= SYSTEM: Default administrator created (admin@flexspace.com) =======");
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while creating default administrator.");
+            throw;
+        }
     }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"FATAL ERROR during initialization: {ex.Message}");
+    Console.WriteLine($"Stack trace: {ex.StackTrace}");
+    Environment.Exit(1);
 }
 
 app.Run();
