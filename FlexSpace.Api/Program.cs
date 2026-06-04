@@ -113,8 +113,7 @@ try
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred during database migration.");
-            throw;
+            logger.LogWarning(ex, "Database migration encountered an issue, but continuing with initialization.");
         }
 
         try
@@ -138,14 +137,12 @@ try
         catch (Exception ex)
         {
             logger.LogError(ex, "An error occurred while creating default administrator.");
-            throw;
         }
     }
 }
 catch (Exception ex)
 {
     Console.WriteLine($"FATAL ERROR during initialization: {ex.Message}");
-    Console.WriteLine($"Stack trace: {ex.StackTrace}");
     Environment.Exit(1);
 }
 
