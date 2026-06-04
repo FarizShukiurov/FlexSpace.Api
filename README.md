@@ -35,7 +35,7 @@ The entire infrastructure (the Web API and the SQL Server database instance) is 
 1.  **Clone the repository:**
     ```bash
     git clone [https://github.com/FarizShukiurov/FlexSpace.Api](https://github.com/FarizShukiurov/FlexSpace.Api)
-    cd GeoEventApi
+    cd FlexSpace.Api
     ```
 
 2.  **Spin up the containers:**
