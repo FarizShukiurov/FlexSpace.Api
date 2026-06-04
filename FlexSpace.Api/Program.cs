@@ -100,10 +100,18 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<FlexSpace.Api.Data.ApplicationDbContext>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<FlexSpace.Api.Data.ApplicationDbContext>();
+    try
+    {
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred during database migration.");
+    }
 
-    if (!context.Users.Any(u => u.Role == "Admin"))
+    if (!dbContext.Users.Any(u => u.Role == "Admin"))
     {
         var admin = new FlexSpace.Api.Models.User
         {
@@ -113,8 +121,8 @@ using (var scope = app.Services.CreateScope())
             Role = "Admin"
         };
 
-        context.Users.Add(admin);
-        context.SaveChanges();
+        dbContext.Users.Add(admin);
+        dbContext.SaveChanges();
 
         Console.WriteLine("======= SYSTEM: Default administrator created (admin@flexspace.com) =======");
     }
