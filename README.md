@@ -23,14 +23,27 @@ I built this API following industry best practices to ensure it is secure, scala
 * **Rich API Documentation:** Swagger UI is fully integrated with XML comments, providing clear request/response models and schema definitions for frontend teams.
 * **Optimized Database Queries:** Utilizing advanced LINQ queries for filtering available workspaces, ensuring fast response times even under heavy loads.
 
-## 🚀 Quick Start (Docker)
-No need to install databases or SDKs. The project is fully containerized.
+## 🐳 Quick Start & Deployment (Docker Compose)
 
-```bash
-# 1. Clone the repository
-git clone [https://github.com/FarizShukiurov/FlexSpace.Api.git](https://github.com/FarizShukiurov/FlexSpace.Api.git)
-cd FlexSpace.Api
+The entire infrastructure (the Web API and the SQL Server database instance) is fully containerized and can be launched with a single command. 
 
-# 2. Build and run via Docker
-docker build -t flexspace-api -f FlexSpace.Api/Dockerfile .
-docker run -p 8080:8080 flexspace-api
+### Prerequisites
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
+
+### Installation Steps
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/FarizShukiurov/FlexSpace.Api](https://github.com/FarizShukiurov/FlexSpace.Api)
+    cd GeoEventApi
+    ```
+
+2.  **Spin up the containers:**
+    ```bash
+    docker-compose up -d --build
+    ```
+
+3.  **Explore the API:**
+    Once the containers are healthy, open your browser and navigate to the interactive Swagger documentation:
+    👉 **`http://localhost:8080/swagger`**
+
